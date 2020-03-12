@@ -1,47 +1,58 @@
 {
-  "name": "badgebot",
-  "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
-  },
-  "private": true,
-  "dependencies": {
-    "@angular/animations": "~9.0.0",
-    "@angular/common": "~9.0.0",
-    "@angular/compiler": "~9.0.0",
-    "@angular/core": "~9.0.0",
-    "@angular/forms": "~9.0.0",
-    "@angular/platform-browser": "~9.0.0",
-    "@angular/platform-browser-dynamic": "~9.0.0",
-    "@angular/router": "~9.0.0",
-    "rxjs": "~6.5.4",
-    "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.1",
-    "@angular/cli": "~9.0.1",
-    "@angular/compiler-cli": "~9.0.0",
-    "@angular/language-service": "~9.0.0",
-    "@types/node": "^12.11.1",
-    "@types/jasmine": "~3.5.0",
-    "@types/jasminewd2": "~2.0.3",
-    "codelyzer": "^5.1.2",
-    "jasmine-core": "~3.5.0",
-    "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~4.3.0",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage-istanbul-reporter": "~2.1.0",
-    "karma-jasmine": "~2.0.1",
-    "karma-jasmine-html-reporter": "^1.4.2",
-    "protractor": "~5.4.3",
-    "ts-node": "~8.3.0",
-    "tslint": "~5.18.0",
-    "typescript": "~3.7.5"
-  }
+   "name": "badgebot",
+   "version": "1.0.0",
+   "description": "BadgeBot",
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/hrueger/badgbot.git"
+   },
+   "keywords": [
+      "bot",
+      "manager",
+      "badges"
+   ],
+   "author": "H. Rüger",
+   "license": "MIT",
+   "bugs": {
+      "url": "https://github.com/hrueger/badgbot/issues"
+   },
+   "homepage": "https://github.com/hrueger/badgbot#readme",
+   "devDependencies": {
+      "@types/archiver": "^3.0.0",
+      "@types/i18n": "^0.8.6",
+      "@types/node": "^13.1.8",
+      "ts-node": "8.6.2",
+      "tslint": "^5.20.1",
+      "typescript": "3.7.5"
+   },
+   "dependencies": {
+      "@types/bcryptjs": "^2.4.2",
+      "@types/body-parser": "^1.17.1",
+      "@types/cors": "^2.8.6",
+      "@types/helmet": "0.0.45",
+      "@types/jsonwebtoken": "^8.3.6",
+      "@types/node-fetch": "^2.5.5",
+      "archiver": "^3.1.1",
+      "bcryptjs": "^2.4.3",
+      "body-parser": "^1.19.0",
+      "class-validator": "^0.11.0",
+      "cors": "^2.8.5",
+      "express": "^4.17.1",
+      "helmet": "^3.21.2",
+      "i18n": "^0.8.4",
+      "jsonwebtoken": "^8.5.1",
+      "mysql": "^2.17.1",
+      "reflect-metadata": "^0.1.13",
+      "squirrelly": "^7.9.2",
+      "ts-node-dev": "^1.0.0-pre.44",
+      "typeorm": "0.2.22"
+   },
+   "scripts": {
+      "tsc": "tsc",
+      "start": "set debug=* && ts-node-dev --respawn  --watch src/views --transpileOnly ./src/index.ts",
+      "prod": "tsc && node ./build/index.js",
+      "build": "tsc",
+      "lint": "npx tslint --project .",
+      "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
+   }
 }
