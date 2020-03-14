@@ -11,5 +11,5 @@ export function toInt(v: string | number): number {
 
 export function render(template, params = {} as any) {
    params.$cache = false;
-   return sqrl.renderFile("C:\\Users\\Hannes\\Desktop\\Angular\\badgebot\\src\\views\\home.html", params);
+   return sqrl.renderFile(path.join(__dirname, "../views/", `${template}.html`), params);
 }
