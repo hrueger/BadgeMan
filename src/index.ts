@@ -1,6 +1,7 @@
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
 import * as express from "express";
+import * as session from "express-session";
 import * as fs from "fs";
 import * as helmet from "helmet";
 import * as path from "path";
@@ -47,6 +48,18 @@ createConnection({
     app.use(cors());
     app.use(helmet());
     app.use(bodyParser.json());
+    const sess: session.SessionOptions = {
+      cookie: {},
+      resave: false,
+      saveUninitialized: false,
+      secret: config.secret,
+    };
+    if (app.get("env") === "production") {
+      app.set("trust proxy", 1);
+      sess.cookie.secure = true;
+    }
+
+    app.use(session(sess));
 
     // Set all routes from routes folder
     app.use("/", routes);
