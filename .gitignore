@@ -6,3 +6,4 @@ tmp/
 temp/
 src/config/*
 !.gitkeep
+sessions/*.json

@@ -11,6 +11,7 @@ import { createConnection } from "typeorm";
 import { config } from "./config/config";
 import routes from "./routes";
 import { toInt } from "./utils/utils";
+const SessionFileStore = require("session-file-store")(session);
 
 fs.readdirSync(path.join(__dirname, "./views/")).forEach((f) => {
   sqrl.definePartial(f.replace(".html", ""), fs.readFileSync(path.join(__dirname, "views", f)));
@@ -53,6 +54,7 @@ createConnection({
       resave: false,
       saveUninitialized: false,
       secret: config.secret,
+      store: new SessionFileStore({}),
     };
     if (app.get("env") === "production") {
       app.set("trust proxy", 1);
