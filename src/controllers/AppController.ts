@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
+import { render } from "../utils/utils";
 
 class AppController {
   public static base = async (req: Request, res: Response) => {
-    res.send(`Hi, ${req.session.user.login}`);
+    const repositories = (await res.locals.octokit.repos.listForAuthenticatedUser()).data;
+    res.send(render("app", {user: req.session.user, repositories}));
   }
 }
 
