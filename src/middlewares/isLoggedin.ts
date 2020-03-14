@@ -11,6 +11,6 @@ export async function isLoggedin(req: Request, res: Response, next: NextFunction
     }
     next();
   } else {
-    res.redirect("/");
+    res.redirect("/?noSession");
   }
 }

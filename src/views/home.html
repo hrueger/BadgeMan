@@ -1,7 +1,12 @@
 {{include(header)/}}
-<main role="main" class="flex-shrink-0">
+<main role="main" class="flex-shrink-0 mt-5">
     <div class="container">
         <h1 class="mt-5">BadgeBot</h1>
+        {{if(options.noSession == true)}}
+        <div class="alert alert-danger">
+            You must be logged in to order to access the app!
+        </div>
+        {{/if}}
         <p class="lead">Please use the button below:</p>
         <a href="https://github.com/login/oauth/authorize?client_id=095a0d4e03ff88510664">Login with GitHub</a>
     </div>
