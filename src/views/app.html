@@ -16,7 +16,12 @@
             <tbody>
                 {{each(options.repositories)}}
                 <tr>
-                    <td>{{@this.name}}</td>
+                    <td>
+                        {{if(@this.fork)}}
+                            <i class="fas fa-code-branch mr-2 text-secondary"></i>
+                        {{/if}}
+                        {{@this.name}}
+                    </td>
                     <td>
                         {{if(@this.description == "")}}
                             <span class="text-danger">No description</span>

@@ -20,6 +20,7 @@ class AppController {
         r.name = repository.name;
         r.language = repository.language ? repository.language : "";
         r.id = repository.id;
+        r.fork = repository.fork;
         r.badges = [];
         try {
           r.readme = (await res.locals.octokit.repos.getReadme({

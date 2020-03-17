@@ -19,6 +19,9 @@ import { Badge } from "./Badge";
     @Column()
     public language: string;
 
+    @Column()
+    public fork: boolean;
+
     @ManyToOne((type) => User, (user) => user.repositories)
     public owner: User;
 
