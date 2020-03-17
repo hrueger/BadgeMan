@@ -9,6 +9,8 @@ import "reflect-metadata";
 import * as sqrl from "squirrelly";
 import { createConnection } from "typeorm";
 import { config } from "./config/config";
+import { Repository } from "./entity/Repository";
+import { User } from "./entity/User";
 import routes from "./routes";
 import { toInt } from "./utils/utils";
 const SessionFileStore = require("session-file-store")(session);
@@ -26,7 +28,7 @@ createConnection({
     subscribersDir: "src/subscriber",
   },
   database: config.database_name,
-  entities: [],
+  entities: [User, Repository],
   host: config.database_host,
   logging: false,
   migrations: [],

@@ -1,13 +1,15 @@
 {{include(header)/}}
-<main role="main" class="flex-shrink-0 mt-5">
+<main role="main" class="flex-shrink-0 mt-5 pt-3">
     <div class="container-fluid">
         <h1 class="">Repositories:</h1>
-        <table class="table table-striped table-hover">
+        <a class="btn btn-outline-primary" href="/app?refresh">Refresh</a>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
                     <th>Language</th>
+                    <th>Readme</th>
                 </tr>
             </thead>
             <tbody>
@@ -15,17 +17,26 @@
                 <tr>
                     <td>{{@this.name}}</td>
                     <td>
-                        {{if(@this.description == null)}}
+                        {{if(@this.description == "")}}
                             <span class="text-danger">No description</span>
                         {{#else}}
                             {{@this.description}}
                         {{/if}}
                     </td>
                     <td>
-                        {{if(@this.language == null)}}
+                        {{if(@this.language == "")}}
                             <span class="text-danger">Unknown</span>
                         {{#else}}
                             {{@this.language}}
+                        {{/if}}
+                    </td>
+                    <td>
+                        {{if(@this.readme == "")}}
+                            <span class="text-danger">Unknown</span>
+                        {{#else}}
+                        <pre>
+                            {{@this.readme}}
+                        </pre>
                         {{/if}}
                     </td>
                 </tr>
