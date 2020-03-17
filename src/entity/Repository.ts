@@ -13,8 +13,8 @@ import { Badge } from "./Badge";
     @Column()
     public description: string;
 
-    @Column({type: "longtext"})
-    public readme: string;
+    @Column()
+    public readmeAvailable: boolean;
 
     @Column()
     public language: string;

@@ -37,10 +37,10 @@
                         {{/if}}
                     </td>
                     <td>
-                        {{if(@this.readme == "")}}
-                            <span class="text-danger">Not available</span>
-                        {{#else}}
+                        {{if(@this.readmeAvailable)}}
                             <a href="https://github.com/{{user.login}}/{{@this.name}}#readme" target="_blank">View Readme</a>
+                        {{#else}}
+                            <span class="text-danger">Not available</span>
                         {{/if}}
                     </td>
                     <td>

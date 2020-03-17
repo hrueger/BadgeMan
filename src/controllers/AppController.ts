@@ -28,29 +28,30 @@ class AppController {
         r.id = repository.id;
         r.fork = repository.fork;
         r.badges = [];
+        let repoReadme = "";
         try {
-          r.readme = (await res.locals.octokit.repos.getReadme({
+          repoReadme = (await res.locals.octokit.repos.getReadme({
             headers: { accept: "application/vnd.github.v3.raw" },
             owner: res.locals.user.username,
             repo: repository.name,
           })).data;
+          r.readmeAvailable = true;
           console.log(`got readme of ${res.locals.user.username}/${repository.name}`);
         } catch (e) {
           console.log(`didn't find readme of ${res.locals.user.username}/${repository.name}`);
-          r.readme = "";
+          r.readmeAvailable = false;
         }
         r.owner = res.locals.user;
         r = await repositoryRepository.save(r);
 
-        let newReadme = r.readme;
         // badges with surrounding links
         let prevBadge = "";
         let stop = false;
         let stoppedAt;
-        newReadme = r.readme.replace(/(\[!\[[^!\]]*\]\([^!\]]*\)\]\([^!\]]*\))/g, (a, t) => {
-          if ((r.readme.split(prevBadge)[1].split(t)[0].trim() || stop) && prevBadge != "") {
+        repoReadme = repoReadme.replace(/(\[!\[[^!\]]*\]\([^!\]]*\)\]\([^!\]]*\))/g, (a, t) => {
+          if ((repoReadme.split(prevBadge)[1].split(t)[0].trim() || stop) && prevBadge != "") {
             stop = true;
-            stoppedAt = r.readme.indexOf(t);
+            stoppedAt = repoReadme.indexOf(t);
             return t;
           } else {
             prevBadge = t;
@@ -71,17 +72,16 @@ class AppController {
         prevBadge = "";
         stop = false;
         // badges without surrounding links
-        newReadme = newReadme.replace(/(!\[[^!\]]*\]\([^!\)]*\))/g, (a, t) => {
+        repoReadme = repoReadme.replace(/(!\[[^!\]]*\]\([^!\)]*\))/g, (a, t) => {
           if (
-            (!stoppedAt || newReadme.indexOf(t) > stoppedAt) ||
-            ((r.readme.split(prevBadge)[1].split(t)[0].trim() || stop) && prevBadge != "")) {
+            (!stoppedAt || repoReadme.indexOf(t) > stoppedAt) ||
+            ((repoReadme.split(prevBadge)[1].split(t)[0].trim() || stop) && prevBadge != "")) {
             return t;
           } else {
             prevBadge = t;
             t = t.replace("![", "");
             const u = t.split("](");
             u[1] = u[1].substr(0, u[1].length - 1);
-            console.log(u);
             const b = new Badge();
             b.src = u[1];
             b.alt = u[0];
@@ -90,7 +90,6 @@ class AppController {
             return "--badge--";
           }
         });
-
       }
 
       res.redirect("/app");
