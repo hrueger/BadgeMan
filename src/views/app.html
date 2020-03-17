@@ -3,12 +3,11 @@
     <div class="container-fluid">
         <h1 class="">Repositories:</h1>
         <a class="btn btn-outline-primary" href="/app?refresh">Refresh</a>
-        <table class="table">
+        <table class="table main-view">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Language</th>
+                    <th class="name-desc">Name</th>
+                    <th class="lang">Language</th>
                     <th style="width: 10%">Readme</th>
                     <th>Badges</th>
                 </tr>
@@ -20,18 +19,14 @@
                         {{if(@this.fork)}}
                             <i class="fas fa-code-branch mr-2 text-secondary"></i>
                         {{/if}}
-                        {{@this.name}}
-                    </td>
-                    <td>
-                        {{if(@this.description == "")}}
-                            <span class="text-danger">No description</span>
-                        {{#else}}
-                            {{@this.description}}
+                            <p class="d-block">{{@this.name}}</p>
+                        {{if(@this.description != "")}}
+                            <small class="d-block text-secondary">({{@this.description}})</small>
                         {{/if}}
                     </td>
                     <td>
                         {{if(@this.language == "")}}
-                            <span class="text-danger">Unknown</span>
+                            <span class="text-danger">n/a</span>
                         {{#else}}
                             {{@this.language}}
                         {{/if}}
