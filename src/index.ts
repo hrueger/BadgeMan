@@ -9,6 +9,7 @@ import "reflect-metadata";
 import * as sqrl from "squirrelly";
 import { createConnection } from "typeorm";
 import { config } from "./config/config";
+import { Badge } from "./entity/Badge";
 import { Repository } from "./entity/Repository";
 import { User } from "./entity/User";
 import routes from "./routes";
@@ -28,7 +29,7 @@ createConnection({
     subscribersDir: "src/subscriber",
   },
   database: config.database_name,
-  entities: [User, Repository],
+  entities: [User, Repository, Badge],
   host: config.database_host,
   logging: false,
   migrations: [],

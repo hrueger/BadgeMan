@@ -12,7 +12,7 @@ export async function isLoggedin(req: Request, res: Response, next: NextFunction
       req.session.user = (await res.locals.octokit.users.getAuthenticated()).data;
     }
     const userRepo = getRepository(User);
-    let user = await userRepo.findOne(req.session.user.id, {relations: ["repositories"]});
+    let user = await userRepo.findOne(req.session.user.id, {relations: ["repositories", "repositories.badges"]});
     if (!user) {
       user = new User();
       user.id = req.session.user.id;

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
+import { Badge } from "../entity/Badge";
 import { Repository } from "../entity/Repository";
 import { User } from "../entity/User";
 import { render } from "../utils/utils";
@@ -14,11 +15,12 @@ class AppController {
       await repositoryRepository.delete({ owner: res.locals.user });
       repositories = (await res.locals.octokit.repos.listForAuthenticatedUser()).data;
       for (const repository of repositories) {
-        const r = new Repository();
+        let r = new Repository();
         r.description = repository.description ? repository.description : "";
         r.name = repository.name;
         r.language = repository.language ? repository.language : "";
         r.id = repository.id;
+        r.badges = [];
         try {
           r.readme = (await res.locals.octokit.repos.getReadme({
             headers: { accept: "application/vnd.github.v3.raw" },
@@ -31,23 +33,25 @@ class AppController {
           r.readme = "";
         }
         r.owner = res.locals.user;
-        repositoryRepository.save(r);
-      }
+        r = await repositoryRepository.save(r);
 
-      res.redirect("/app");
-    } else {
-      const repos = res.locals.user.repositories as Repository[];
-      for (const repo of repos) {
-        let newReadme = repo.readme;
+        const badgeRepository = getRepository(Badge);
+        let newReadme = r.readme;
         // badges with surrounding links
         let prevBadge = "";
         let stop = false;
-        newReadme = repo.readme.replace(/(\[!\[[^!\]]*\]\([^!\]]*\)\]\([^!\]]*\))/g, (a, t) => {
-          if ((repo.readme.split(prevBadge)[1].split(t)[0].trim() || stop) && prevBadge != "") {
+        let stoppedAt;
+        newReadme = r.readme.replace(/(\[!\[[^!\]]*\]\([^!\]]*\)\]\([^!\]]*\))/g, (a, t) => {
+          if ((r.readme.split(prevBadge)[1].split(t)[0].trim() || stop) && prevBadge != "") {
             stop = true;
+            stoppedAt = r.readme.indexOf(t);
             return t;
           } else {
             prevBadge = t;
+            const b = new Badge();
+            b.src = t;
+            b.repository = r;
+            badgeRepository.save(b);
             return "--badgewithurl--";
           }
         });
@@ -56,17 +60,25 @@ class AppController {
         stop = false;
         // badges without surrounding links
         newReadme = newReadme.replace(/(!\[[^!\]]*\]\([^!\)]*\))/g, (a, t) => {
-          if ((repo.readme.split(prevBadge)[1].split(t)[0].trim() || stop) && prevBadge != "") {
+          if (
+            (!stoppedAt || newReadme.indexOf(t) > stoppedAt) ||
+            ((r.readme.split(prevBadge)[1].split(t)[0].trim() || stop) && prevBadge != "")) {
             return t;
           } else {
             prevBadge = t;
+            const b = new Badge();
+            b.src = t;
+            b.repository = r;
+            badgeRepository.save(b);
             return "--badge--";
           }
         });
 
-        repo.readme = newReadme;
       }
-      res.send(render("app", { user: req.session.user, repositories: repos }));
+
+      res.redirect("/app");
+    } else {
+      res.send(render("app", { user: req.session.user, repositories: res.locals.user.repositories }));
     }
   }
 }
