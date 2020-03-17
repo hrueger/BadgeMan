@@ -10,6 +10,9 @@ export class Badge {
   @Column()
   public src: string;
 
+  @Column()
+  public alt: string;
+
   @Column({nullable: true})
   public href: string;
 

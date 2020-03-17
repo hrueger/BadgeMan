@@ -46,11 +46,13 @@
                         {{/if}}
                     </td>
                     <td>
-                        <ul>
                             {{each(@this.badges)}}
-                                <li>{{@this.src}}</li>
+                                    {{if(@this.href)}}
+                                        <a href="{{@this.href}}"><img alt="{{@this.alt}}" src="{{@this.src}}"></a>
+                                    {{#else}}
+                                        <img alt="{{@this.alt}}" src="{{@this.src}}">
+                                    {{/if}}
                             {{/each}}
-                        </ul>
                     </td>
                 </tr>
                 {{/each}}

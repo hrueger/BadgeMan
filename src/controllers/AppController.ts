@@ -12,7 +12,13 @@ class AppController {
       res.locals.user.repositories = [];
       getRepository(User).save(res.locals.user);
       const repositoryRepository = getRepository(Repository);
-      await repositoryRepository.delete({ owner: res.locals.user });
+      const badgeRepository = getRepository(Badge);
+      const reposToDelete = await repositoryRepository.find({owner: res.locals.user});
+      for (const r of reposToDelete) {
+        r.badges = [];
+        await repositoryRepository.save(r);
+        await repositoryRepository.delete(r.id);
+      }
       repositories = (await res.locals.octokit.repos.listForAuthenticatedUser()).data;
       for (const repository of repositories) {
         let r = new Repository();
@@ -36,7 +42,6 @@ class AppController {
         r.owner = res.locals.user;
         r = await repositoryRepository.save(r);
 
-        const badgeRepository = getRepository(Badge);
         let newReadme = r.readme;
         // badges with surrounding links
         let prevBadge = "";
@@ -49,8 +54,14 @@ class AppController {
             return t;
           } else {
             prevBadge = t;
+            t = t.replace("[![", "");
+            const u = t.split("](");
+            u[1] = u[1].substr(0, u[1].length - 1);
+            u[2] = u[2].substr(0, u[2].length - 1);
             const b = new Badge();
-            b.src = t;
+            b.alt = u[0];
+            b.src = u[1];
+            b.href = u[2];
             b.repository = r;
             badgeRepository.save(b);
             return "--badgewithurl--";
@@ -67,8 +78,13 @@ class AppController {
             return t;
           } else {
             prevBadge = t;
+            t = t.replace("![", "");
+            const u = t.split("](");
+            u[1] = u[1].substr(0, u[1].length - 1);
+            console.log(u);
             const b = new Badge();
-            b.src = t;
+            b.src = u[1];
+            b.alt = u[0];
             b.repository = r;
             badgeRepository.save(b);
             return "--badge--";
