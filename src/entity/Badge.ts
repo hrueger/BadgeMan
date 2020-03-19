@@ -18,4 +18,6 @@ export class Badge {
 
   @ManyToOne(() => Repository, (repository) => repository.badges)
   public repository: Repository;
+
+  public additionalInfo?: any;
 }

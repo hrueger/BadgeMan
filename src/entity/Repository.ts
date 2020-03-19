@@ -1,6 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryColumn, OneToMany } from "typeorm";
-import { User } from "./User";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { Badge } from "./Badge";
+import { User } from "./User";
 
 @Entity()
   export class Repository {
