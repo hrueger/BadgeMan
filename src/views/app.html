@@ -6,10 +6,16 @@
         <table class="table main-view">
             <thead>
                 <tr>
+                    <th colspan="3">General</th>
+                    <th colspan="{{repositories[0].badgeCategories.length}}">Badges</th>
+                </tr>
+                <tr>
                     <th class="name-desc">Name</th>
                     <th class="lang">Language</th>
                     <th style="width: 10%">Readme</th>
-                    <th>Badges</th>
+                    {{each(options.repositories[0].badgeCategories)}}
+                    <th>{{@this.name}}</th>
+                    {{/each}}
                 </tr>
             </thead>
             <tbody>
@@ -38,15 +44,17 @@
                             <span class="text-danger">Not available</span>
                         {{/if}}
                     </td>
-                    <td>
+                    {{each(@this.badgeCategories)}}
+                        <td>
                             {{each(@this.badges)}}
-                                    {{if(@this.href)}}
-                                        <a href="{{@this.href}}"><img alt="{{@this.alt}}" src="{{@this.src}}"></a>
-                                    {{#else}}
-                                        <img alt="{{@this.alt}}" src="{{@this.src}}">
-                                    {{/if}}
+                                {{if(@this.href)}}
+                                    <a href="{{@this.href}}"><img alt="{{@this.alt}}" src="{{@this.src}}"></a>
+                                {{#else}}
+                                    <img alt="{{@this.alt}}" src="{{@this.src}}">
+                                {{/if}}
                             {{/each}}
-                    </td>
+                        </td>
+                    {{/each}}
                 </tr>
                 {{/each}}
             </tbody>

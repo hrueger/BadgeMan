@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
+import * as reverseStringTemplate from "reverse-string-template";
 import { getRepository } from "typeorm";
 import { Badge } from "../entity/Badge";
 import { Repository } from "../entity/Repository";
 import { User } from "../entity/User";
+import { providers } from "../ressources/providers";
 import { render } from "../utils/utils";
 
 class AppController {
@@ -13,7 +15,7 @@ class AppController {
       getRepository(User).save(res.locals.user);
       const repositoryRepository = getRepository(Repository);
       const badgeRepository = getRepository(Badge);
-      const reposToDelete = await repositoryRepository.find({owner: res.locals.user});
+      const reposToDelete = await repositoryRepository.find({ owner: res.locals.user });
       for (const r of reposToDelete) {
         r.badges = [];
         await repositoryRepository.save(r);
@@ -94,7 +96,55 @@ class AppController {
 
       res.redirect("/app");
     } else {
-      res.send(render("app", { user: req.session.user, repositories: res.locals.user.repositories }));
+      let allCategories = [];
+      for (const repo of res.locals.user.repositories as Repository[]) {
+        for (const badge of repo.badges) {
+          providerLoop:
+          for (const provider of providers) {
+            if (badge.src.startsWith(provider.prefix)) {
+              badge.additionalInfo = `${provider.name} Badge detected!`;
+              for (const categoryKey of Object.keys(provider.categories)) {
+                for (const badgeTemplate of provider.categories[categoryKey]) {
+                  let url = `${provider.prefix}${badgeTemplate.url}`;
+                  let n = url.indexOf("?");
+                  url = url.substring(0, n != -1 ? n : url.length);
+                  n = badge.src.indexOf("?");
+                  const badgeSrc = badge.src.substring(0, n != -1 ? n : badge.src.length);
+                  const variables = reverseStringTemplate(badgeSrc, url, {});
+                  if (variables) {
+                    badge.additionalInfo = {
+                      provider,
+                      categoryKey,
+                      badgeTemplate,
+                    };
+                    // tslint:disable-next-line: no-unused-expression
+                    !allCategories.includes(categoryKey) ? allCategories.push(categoryKey) : undefined;
+                    break providerLoop;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      allCategories = allCategories.sort();
+      for (const repo of res.locals.user.repositories) {
+        repo.badgeCategories = allCategories.map((c) => {
+          return {
+            name: c,
+            badges: repo.badges.filter((b) => b.additionalInfo?.categoryKey == c),
+          };
+        });
+        repo.badgeCategories.push({
+          name: "Unknown",
+          badges: repo.badges.filter((b) => !b.additionalInfo),
+        });
+      }
+
+      res.send(render("app", {
+        user: req.session.user,
+        repositories: res.locals.user.repositories,
+      }));
     }
   }
 }
