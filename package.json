@@ -22,7 +22,7 @@
     "@types/express-session": "^1.17.0",
     "@types/i18n": "^0.8.6",
     "@types/node": "^13.7.6",
-    "ts-node": "8.6.2",
+    "ts-node": "8.7.0",
     "tslint": "^5.20.1",
     "typescript": "3.8.3"
   },
