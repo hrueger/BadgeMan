@@ -8,7 +8,7 @@ import { providers } from "../ressources/providers";
 import { render } from "../utils/utils";
 
 class AppController {
-    public static base = async (req: Request, res: Response) => {
+    public static base = async (req: Request, res: Response): Promise<void> => {
         let repositories;
         if (req.query.refresh != undefined) {
             res.locals.user.repositories = [];
@@ -38,9 +38,10 @@ class AppController {
                         repo: repository.name,
                     })).data;
                     r.readmeAvailable = true;
-                    console.log(`got readme of ${res.locals.user.username}/${repository.name}`);
+                    // console.log(`got readme of ${res.locals.user.username}/${repository.name}`);
                 } catch (e) {
-                    console.log(`didn't find readme of ${res.locals.user.username}/${repository.name}`);
+                    // console.log(`didn't find readme\
+                    // of ${res.locals.user.username}/${repository.name}`);
                     r.readmeAvailable = false;
                 }
                 r.owner = res.locals.user;
@@ -55,42 +56,37 @@ class AppController {
                         stop = true;
                         stoppedAt = repoReadme.indexOf(t);
                         return t;
-                    } else {
-                        prevBadge = t;
-                        t = t.replace("[![", "");
-                        const u = t.split("](");
-                        u[1] = u[1].substr(0, u[1].length - 1);
-                        u[2] = u[2].substr(0, u[2].length - 1);
-                        const b = new Badge();
-                        b.alt = u[0];
-                        b.src = u[1];
-                        b.href = u[2];
-                        b.repository = r;
-                        badgeRepository.save(b);
-                        return "--badgewithurl--";
                     }
+                    prevBadge = t;
+                    t = t.replace("[![", "");
+                    const u = t.split("](");
+                    u[1] = u[1].substr(0, u[1].length - 1);
+                    u[2] = u[2].substr(0, u[2].length - 1);
+                    const b = new Badge();
+                    [b.alt, b.src, b.href] = u;
+                    b.repository = r;
+                    badgeRepository.save(b);
+                    return "--badgewithurl--";
                 });
 
                 prevBadge = "";
                 stop = false;
                 // badges without surrounding links
-                repoReadme = repoReadme.replace(/(!\[[^!\]]*\]\([^!\)]*\))/g, (a, t) => {
+                repoReadme = repoReadme.replace(/(!\[[^!\]]*\]\([^!)]*\))/g, (a, t) => {
                     if (
-                        (!stoppedAt || repoReadme.indexOf(t) > stoppedAt) ||
-                        ((repoReadme.split(prevBadge)[1].split(t)[0].trim() || stop) && prevBadge != "")) {
+                        (!stoppedAt || repoReadme.indexOf(t) > stoppedAt)
+                        || ((repoReadme.split(prevBadge)[1].split(t)[0].trim() || stop) && prevBadge != "")) {
                         return t;
-                    } else {
-                        prevBadge = t;
-                        t = t.replace("![", "");
-                        const u = t.split("](");
-                        u[1] = u[1].substr(0, u[1].length - 1);
-                        const b = new Badge();
-                        b.src = u[1];
-                        b.alt = u[0];
-                        b.repository = r;
-                        badgeRepository.save(b);
-                        return "--badge--";
                     }
+                    prevBadge = t;
+                    t = t.replace("![", "");
+                    const u = t.split("](");
+                    u[1] = u[1].substr(0, u[1].length - 1);
+                    const b = new Badge();
+                    [b.alt, b.src] = u;
+                    b.repository = r;
+                    badgeRepository.save(b);
+                    return "--badge--";
                 });
             }
 
@@ -99,6 +95,7 @@ class AppController {
             let allCategories = [];
             for (const repo of res.locals.user.repositories as Repository[]) {
                 for (const badge of repo.badges) {
+                    // eslint-disable-next-line no-labels
                     providerLoop:
                     for (const provider of providers) {
                         if (badge.src.startsWith(provider.prefix)) {
@@ -109,7 +106,8 @@ class AppController {
                                     let n = url.indexOf("?");
                                     url = url.substring(0, n != -1 ? n : url.length);
                                     n = badge.src.indexOf("?");
-                                    const badgeSrc = badge.src.substring(0, n != -1 ? n : badge.src.length);
+                                    const badgeSrc = badge.src
+                                        .substring(0, n != -1 ? n : badge.src.length);
                                     const variables = reverseStringTemplate(badgeSrc, url, {});
                                     if (variables) {
                                         badge.additionalInfo = {
@@ -117,8 +115,10 @@ class AppController {
                                             categoryKey,
                                             badgeTemplate,
                                         };
-                                        // tslint:disable-next-line: no-unused-expression
-                                        !allCategories.includes(categoryKey) ? allCategories.push(categoryKey) : undefined;
+                                        // eslint-disable-next-line no-unused-expressions
+                                        !allCategories.includes(categoryKey)
+                                            ? allCategories.push(categoryKey) : undefined;
+                                        // eslint-disable-next-line no-labels
                                         break providerLoop;
                                     }
                                 }
@@ -129,12 +129,10 @@ class AppController {
             }
             allCategories = allCategories.sort();
             for (const repo of res.locals.user.repositories) {
-                repo.badgeCategories = allCategories.map((c) => {
-                    return {
-                        name: c,
-                        badges: repo.badges.filter((b) => b.additionalInfo?.categoryKey == c),
-                    };
-                });
+                repo.badgeCategories = allCategories.map((c) => ({
+                    name: c,
+                    badges: repo.badges.filter((b) => b.additionalInfo?.categoryKey == c),
+                }));
                 repo.badgeCategories.push({
                     name: "Unknown",
                     badges: repo.badges.filter((b) => !b.additionalInfo),
@@ -146,13 +144,13 @@ class AppController {
                 repositories: res.locals.user.repositories,
             }));
         }
-    }
+    };
 
-    public static settings = async (req: Request, res: Response) => {
+    public static settings = async (req: Request, res: Response): Promise<void> => {
         res.send(render("system/settings", {
             user: req.session.user,
         }));
-    }
+    };
 }
 
 export default AppController;

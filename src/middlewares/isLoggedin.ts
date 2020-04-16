@@ -3,10 +3,10 @@ import { NextFunction, Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { User } from "../entity/User";
 
-export async function isLoggedin(req: Request, res: Response, next: NextFunction) {
-    if (req.session.loggedIn && req.session.access_token) {
+export async function isLoggedin(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (req.session.loggedIn && req.session.accessToken) {
         res.locals.octokit = new Octokit({
-            auth: `bearer ${req.session.access_token}`,
+            auth: `bearer ${req.session.accessToken}`,
         });
         if (!req.session.user) {
             req.session.user = (await res.locals.octokit.users.getAuthenticated()).data;

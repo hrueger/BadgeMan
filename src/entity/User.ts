@@ -1,4 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryColumn, Unique } from "typeorm";
+import {
+    Column, Entity, OneToMany, PrimaryColumn, Unique,
+} from "typeorm";
 import { Repository } from "./Repository";
 
 @Entity()

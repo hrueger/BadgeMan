@@ -1,4 +1,6 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+import {
+    Column, Entity, ManyToOne, OneToMany, PrimaryColumn,
+} from "typeorm";
 import { Badge } from "./Badge";
 import { User } from "./User";
 
@@ -22,9 +24,9 @@ export class Repository {
     @Column()
     public fork: boolean;
 
-    @ManyToOne((type) => User, (user) => user.repositories)
+    @ManyToOne(() => User, (user) => user.repositories)
     public owner: User;
 
-    @OneToMany((type) => Badge, (badge) => badge.repository)
+    @OneToMany(() => Badge, (badge) => badge.repository)
     public badges: Badge[];
 }

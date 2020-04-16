@@ -8,22 +8,23 @@ import * as path from "path";
 import "reflect-metadata";
 import * as sqrl from "squirrelly";
 import { createConnection } from "typeorm";
+import * as glob from "glob";
 import { config } from "./config/config";
 import { Badge } from "./entity/Badge";
 import { Repository } from "./entity/Repository";
 import { User } from "./entity/User";
 import routes from "./routes";
 import { toInt } from "./utils/utils";
-import * as glob from "glob";
-const SessionFileStore = require("session-file-store")(session);
+import * as sessions from "session-file-store";
+
+const SessionFileStore = sessions(session);
 
 glob(path.join(__dirname, "./views/**/*.html"), (error, files) => {
     for (const file of files) {
         const partialName = file.replace(path.join(__dirname, "./views/").replace(/\\/g, "/"), "").replace(".html", "");
-        sqrl.definePartial(partialName, fs.readFileSync(file));
+        sqrl.definePartial(partialName, fs.readFileSync(file).toString());
     }
 });
-
 
 
 // Connects to the Database -> then starts the express
@@ -34,22 +35,22 @@ createConnection({
         migrationsDir: "src/migration",
         subscribersDir: "src/subscriber",
     },
-    database: config.database_name,
+    database: config.databaseName,
     entities: [User, Repository, Badge],
-    host: config.database_host,
+    host: config.databaseHost,
     logging: false,
     migrations: [],
     migrationsRun: true,
-    password: config.database_password,
-    port: toInt(config.database_port),
+    password: config.databasePassword,
+    port: toInt(config.databasePort),
     synchronize: true,
     type: "mysql",
-    username: config.database_user,
+    username: config.databaseUser,
 })
     .then(async (connection) => {
         await connection.query("SET NAMES utf8mb4;");
         await connection.synchronize();
-        // tslint:disable-next-line: no-console
+        // eslint-disable-next-line
         console.log("Migrations: ", await connection.runMigrations());
         // Create a new express application instance
         const app = express();
@@ -76,9 +77,9 @@ createConnection({
         app.use("/", routes);
 
         app.listen(config.port, () => {
-            // tslint:disable-next-line: no-console
+            // eslint-disable-next-line
             console.log(`Server started on port ${config.port}!`);
         });
     })
-    // tslint:disable-next-line: no-console
+    // eslint-disable-next-line
     .catch((error) => console.log(error));
