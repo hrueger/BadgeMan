@@ -147,6 +147,12 @@ class AppController {
       }));
     }
   }
+
+  public static settings = async (req: Request, res: Response) => {
+    res.send(render("settings", {
+      user: req.session.user,
+    }));
+  }
 }
 
 export default AppController;
