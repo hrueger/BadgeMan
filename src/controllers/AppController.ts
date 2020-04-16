@@ -141,7 +141,7 @@ class AppController {
         });
       }
 
-      res.send(render("app", {
+      res.send(render("plugins/readmeBadges/app", {
         user: req.session.user,
         repositories: res.locals.user.repositories,
       }));
@@ -149,7 +149,7 @@ class AppController {
   }
 
   public static settings = async (req: Request, res: Response) => {
-    res.send(render("settings", {
+    res.send(render("system/settings", {
       user: req.session.user,
     }));
   }

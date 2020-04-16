@@ -7,7 +7,7 @@ class HomeController {
       res.redirect("/app");
       return;
     }
-    res.send(render("home", {noSession : req.query.noSession == undefined ? false : true}));
+    res.send(render("home/home", {noSession : req.query.noSession == undefined ? false : true}));
   }
 }
 

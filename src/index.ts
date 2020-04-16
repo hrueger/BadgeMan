@@ -14,11 +14,17 @@ import { Repository } from "./entity/Repository";
 import { User } from "./entity/User";
 import routes from "./routes";
 import { toInt } from "./utils/utils";
+import * as glob from "glob";
 const SessionFileStore = require("session-file-store")(session);
 
-fs.readdirSync(path.join(__dirname, "./views/")).forEach((f) => {
-  sqrl.definePartial(f.replace(".html", ""), fs.readFileSync(path.join(__dirname, "views", f)));
+glob(path.join(__dirname, "./views/**/*.html"), (error, files) => {
+  for (const file of files) {
+    const partialName = file.replace(path.join(__dirname, "./views/").replace(/\\/g, "/"), "").replace(".html", "");
+    sqrl.definePartial(partialName, fs.readFileSync(file));
+  }
 });
+
+
 
 // Connects to the Database -> then starts the express
 createConnection({
