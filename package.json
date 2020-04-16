@@ -1,7 +1,7 @@
 {
-  "name": "badgebot",
+  "name": "repoman",
   "version": "1.0.0",
-  "description": "BadgeBot",
+  "description": "RepoMan",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hrueger/badgbot.git"
