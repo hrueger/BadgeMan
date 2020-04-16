@@ -3,7 +3,7 @@ import { Badge } from "./Badge";
 import { User } from "./User";
 
 @Entity()
-  export class Repository {
+export class Repository {
     @PrimaryColumn()
     public id: string;
 
@@ -27,4 +27,4 @@ import { User } from "./User";
 
     @OneToMany((type) => Badge, (badge) => badge.repository)
     public badges: Badge[];
-  }
+}

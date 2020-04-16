@@ -4,20 +4,20 @@ import { Repository } from "./Repository";
 @Entity()
 @Unique(["id"])
 export class Badge {
-  @PrimaryGeneratedColumn()
-  public id: number;
+    @PrimaryGeneratedColumn()
+    public id: number;
 
-  @Column()
-  public src: string;
+    @Column()
+    public src: string;
 
-  @Column()
-  public alt: string;
+    @Column()
+    public alt: string;
 
-  @Column({nullable: true})
-  public href: string;
+    @Column({ nullable: true })
+    public href: string;
 
-  @ManyToOne(() => Repository, (repository) => repository.badges)
-  public repository: Repository;
+    @ManyToOne(() => Repository, (repository) => repository.badges)
+    public repository: Repository;
 
-  public additionalInfo?: any;
+    public additionalInfo?: any;
 }

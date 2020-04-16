@@ -23,37 +23,38 @@
                 <tr>
                     <td>
                         {{if(@this.fork)}}
-                            <i class="fas fa-code-branch mr-2 text-secondary"></i>
+                        <i class="fas fa-code-branch mr-2 text-secondary"></i>
                         {{/if}}
-                            <p class="d-block">{{@this.name}}</p>
+                        <p class="d-block">{{@this.name}}</p>
                         {{if(@this.description != "")}}
-                            <small class="d-block text-secondary">({{@this.description}})</small>
+                        <small class="d-block text-secondary">({{@this.description}})</small>
                         {{/if}}
                     </td>
                     <td>
                         {{if(@this.language == "")}}
-                            <span class="text-danger">n/a</span>
+                        <span class="text-danger">n/a</span>
                         {{#else}}
-                            {{@this.language}}
+                        {{@this.language}}
                         {{/if}}
                     </td>
                     <td>
                         {{if(@this.readmeAvailable)}}
-                            <a href="https://github.com/{{user.login}}/{{@this.name}}#readme" target="_blank">View Readme</a>
+                        <a href="https://github.com/{{user.login}}/{{@this.name}}#readme" target="_blank">View
+                            Readme</a>
                         {{#else}}
-                            <span class="text-danger">Not available</span>
+                        <span class="text-danger">Not available</span>
                         {{/if}}
                     </td>
                     {{each(@this.badgeCategories)}}
-                        <td>
-                            {{each(@this.badges)}}
-                                {{if(@this.href)}}
-                                    <a href="{{@this.href}}"><img alt="{{@this.alt}}" src="{{@this.src}}"></a>
-                                {{#else}}
-                                    <img alt="{{@this.alt}}" src="{{@this.src}}">
-                                {{/if}}
-                            {{/each}}
-                        </td>
+                    <td>
+                        {{each(@this.badges)}}
+                        {{if(@this.href)}}
+                        <a href="{{@this.href}}"><img alt="{{@this.alt}}" src="{{@this.src}}"></a>
+                        {{#else}}
+                        <img alt="{{@this.alt}}" src="{{@this.src}}">
+                        {{/if}}
+                        {{/each}}
+                    </td>
                     {{/each}}
                 </tr>
                 {{/each}}

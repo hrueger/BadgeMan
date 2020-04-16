@@ -1,69 +1,69 @@
 {
-  "name": "repoman",
-  "version": "1.0.0",
-  "description": "RepoMan",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hrueger/badgbot.git"
-  },
-  "keywords": [
-    "bot",
-    "manager",
-    "badges"
-  ],
-  "author": "H. Rüger",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/hrueger/badgbot/issues"
-  },
-  "homepage": "https://github.com/hrueger/badgbot#readme",
-  "devDependencies": {
-    "@types/archiver": "^3.1.0",
-    "@types/express-session": "^1.17.0",
-    "@types/i18n": "^0.8.6",
-    "@types/node": "^13.7.6",
-    "ts-node": "8.8.1",
-    "tslint": "^5.20.1",
-    "typescript": "3.8.3"
-  },
-  "dependencies": {
-    "@octokit/rest": "^17.1.1",
-    "@types/bcryptjs": "^2.4.2",
-    "@types/body-parser": "^1.19.0",
-    "@types/cors": "^2.8.6",
-    "@types/helmet": "0.0.45",
-    "@types/jsonwebtoken": "^8.3.8",
-    "@types/node-fetch": "^2.5.5",
-    "archiver": "^3.1.1",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "class-validator": "^0.11.1",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-session": "^1.17.0",
-    "glob": "^7.1.6",
-    "helmet": "^3.21.3",
-    "i18n": "^0.8.6",
-    "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
-    "node-fetch": "^2.6.0",
-    "reflect-metadata": "^0.1.13",
-    "reverse-string-template": "^1.0.0",
-    "session-file-store": "^1.4.0",
-    "snyk": "^1.303.1",
-    "squirrelly": "^7.9.2",
-    "ts-node-dev": "^1.0.0-pre.44",
-    "typeorm": "^0.2.24"
-  },
-  "scripts": {
-    "tsc": "tsc",
-    "start": "set debug=* && ts-node-dev --respawn  --watch src/views --transpileOnly ./src/index.ts",
-    "prod": "tsc && node ./build/index.js",
-    "build": "tsc",
-    "lint": "npx tslint --project .",
-    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
-  },
-  "snyk": true
+    "name": "repoman",
+    "version": "1.0.0",
+    "description": "RepoMan",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hrueger/badgbot.git"
+    },
+    "keywords": [
+        "bot",
+        "manager",
+        "badges"
+    ],
+    "author": "H. Rüger",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/hrueger/badgbot/issues"
+    },
+    "homepage": "https://github.com/hrueger/badgbot#readme",
+    "devDependencies": {
+        "@types/archiver": "^3.1.0",
+        "@types/express-session": "^1.17.0",
+        "@types/i18n": "^0.8.6",
+        "@types/node": "^13.7.6",
+        "ts-node": "8.8.1",
+        "tslint": "^5.20.1",
+        "typescript": "3.8.3"
+    },
+    "dependencies": {
+        "@octokit/rest": "^17.1.1",
+        "@types/bcryptjs": "^2.4.2",
+        "@types/body-parser": "^1.19.0",
+        "@types/cors": "^2.8.6",
+        "@types/helmet": "0.0.45",
+        "@types/jsonwebtoken": "^8.3.8",
+        "@types/node-fetch": "^2.5.5",
+        "archiver": "^3.1.1",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "class-validator": "^0.11.1",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "express-session": "^1.17.0",
+        "glob": "^7.1.6",
+        "helmet": "^3.21.3",
+        "i18n": "^0.8.6",
+        "jsonwebtoken": "^8.5.1",
+        "mysql": "^2.18.1",
+        "node-fetch": "^2.6.0",
+        "reflect-metadata": "^0.1.13",
+        "reverse-string-template": "^1.0.0",
+        "session-file-store": "^1.4.0",
+        "snyk": "^1.303.1",
+        "squirrelly": "^7.9.2",
+        "ts-node-dev": "^1.0.0-pre.44",
+        "typeorm": "^0.2.24"
+    },
+    "scripts": {
+        "tsc": "tsc",
+        "start": "set debug=* && ts-node-dev --respawn  --watch src/views --transpileOnly ./src/index.ts",
+        "prod": "tsc && node ./build/index.js",
+        "build": "tsc",
+        "lint": "npx tslint --project .",
+        "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
+        "snyk-protect": "snyk protect",
+        "prepare": "npm run snyk-protect"
+    },
+    "snyk": true
 }
