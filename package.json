@@ -60,7 +60,6 @@
         "reflect-metadata": "^0.1.13",
         "reverse-string-template": "^1.0.0",
         "session-file-store": "^1.4.0",
-        "snyk": "^1.304.0",
         "squirrelly": "^7.9.2",
         "ts-node-dev": "^1.0.0-pre.44",
         "typeorm": "^0.2.24"
@@ -72,9 +71,6 @@
         "build": "tsc",
         "lint": "eslint -c .eslintrc.json --ext .ts src",
         "fix": "eslint -c .eslintrc.json --ext .ts src --fix",
-        "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
-        "snyk-protect": "snyk protect",
-        "prepare": "npm run snyk-protect"
-    },
-    "snyk": true
+        "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
+    }
 }
