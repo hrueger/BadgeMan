@@ -1,7 +1,7 @@
 import { Octokit } from "@octokit/rest";
 import { NextFunction, Request, Response } from "express";
 import { getRepository } from "typeorm";
-import { User } from "../entity/User";
+import { User } from "../entity/system/User";
 
 export async function isLoggedin(req: Request, res: Response, next: NextFunction): Promise<void> {
     if (req.session.loggedIn && req.session.accessToken) {

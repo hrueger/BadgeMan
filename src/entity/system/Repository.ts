@@ -1,7 +1,7 @@
 import {
     Column, Entity, ManyToOne, OneToMany, PrimaryColumn,
 } from "typeorm";
-import { Badge } from "./Badge";
+import { Badge } from "../plugins/readmeBadges/Badge";
 import { User } from "./User";
 
 @Entity()
