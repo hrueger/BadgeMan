@@ -2,7 +2,7 @@
 <main role="main" class="flex-shrink-0 mt-5 pt-3">
     <div class="container-fluid">
         <h1 class="">Repositories:</h1>
-        <a class="btn btn-outline-primary" href="/app?refresh">Refresh</a>
+        <a class="btn btn-outline-primary" href="/app?refresh">Refresh</a> {{if(options.repositories.length > 0)}}
         <table class="table main-view">
             <thead>
                 <tr>
@@ -23,43 +23,33 @@
                 <tr>
                     <td>
                         {{if(@this.fork)}}
-                        <i class="fas fa-code-branch mr-2 text-secondary"></i>
-                        {{/if}}
+                        <i class="fas fa-code-branch mr-2 text-secondary"></i> {{/if}}
                         <p class="d-block">{{@this.name}}</p>
                         {{if(@this.description != "")}}
-                        <small class="d-block text-secondary">({{@this.description}})</small>
-                        {{/if}}
+                        <small class="d-block text-secondary">({{@this.description}})</small> {{/if}}
                     </td>
                     <td>
                         {{if(@this.language == "")}}
-                        <span class="text-danger">n/a</span>
-                        {{#else}}
-                        {{@this.language}}
-                        {{/if}}
+                        <span class="text-danger">n/a</span> {{#else}} {{@this.language}} {{/if}}
                     </td>
                     <td>
                         {{if(@this.readmeAvailable)}}
                         <a href="https://github.com/{{user.login}}/{{@this.name}}#readme" target="_blank">View
-                            Readme</a>
-                        {{#else}}
-                        <span class="text-danger">Not available</span>
-                        {{/if}}
+                            Readme</a> {{#else}}
+                        <span class="text-danger">Not available</span> {{/if}}
                     </td>
                     {{each(@this.badgeCategories)}}
                     <td>
-                        {{each(@this.badges)}}
-                        {{if(@this.href)}}
+                        {{each(@this.badges)}} {{if(@this.href)}}
                         <a href="{{@this.href}}"><img alt="{{@this.alt}}" src="{{@this.src}}"></a>
                         {{#else}}
-                        <img alt="{{@this.alt}}" src="{{@this.src}}">
-                        {{/if}}
-                        {{/each}}
+                        <img alt="{{@this.alt}}" src="{{@this.src}}"> {{/if}} {{/each}}
                     </td>
                     {{/each}}
                 </tr>
                 {{/each}}
             </tbody>
-        </table>
+        </table> {{/if}}
     </div>
 </main>
 {{include(partials/footer)/}}
