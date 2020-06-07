@@ -1,7 +1,7 @@
 import {
     Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique,
 } from "typeorm";
-import { Repository } from "./Repository";
+import { Repository } from "../../system/Repository";
 
 @Entity()
 @Unique(["id"])

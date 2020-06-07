@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import * as reverseStringTemplate from "reverse-string-template";
 import { getRepository } from "typeorm";
-import { Badge } from "../entity/Badge";
-import { Repository } from "../entity/Repository";
-import { User } from "../entity/User";
+import { Badge } from "../entity/plugins/readmeBadges/Badge";
+import { Repository } from "../entity/system/Repository";
+import { User } from "../entity/system/User";
 import { providers } from "../ressources/providers";
 import { render } from "../utils/utils";
 

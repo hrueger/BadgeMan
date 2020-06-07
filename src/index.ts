@@ -10,12 +10,13 @@ import * as sqrl from "squirrelly";
 import { createConnection } from "typeorm";
 import * as glob from "glob";
 import { config } from "./config/config";
-import { Badge } from "./entity/Badge";
-import { Repository } from "./entity/Repository";
-import { User } from "./entity/User";
+import { Badge } from "./entity/plugins/readmeBadges/Badge";
+import { Repository } from "./entity/system/Repository";
+import { User } from "./entity/system/User";
 import routes from "./routes";
 import { toInt } from "./utils/utils";
 import * as sessions from "session-file-store";
+import { DependencyUpgradeJob } from "./entity/plugins/dependencies/DependencyUpgradeJob";
 
 const SessionFileStore = sessions(session);
 
@@ -36,7 +37,7 @@ createConnection({
         subscribersDir: "src/subscriber",
     },
     database: config.databaseName,
-    entities: [User, Repository, Badge],
+    entities: [User, Repository, Badge, DependencyUpgradeJob],
     host: config.databaseHost,
     logging: false,
     migrations: [],
