@@ -60,7 +60,7 @@
         "i18n": "^0.8.6",
         "jsonwebtoken": "^8.5.1",
         "mysql": "^2.18.1",
-        "node-fetch": "^2.6.0",
+        "node-fetch": "^2.6.1",
         "npm-check-updates": "^4.1.2",
         "reflect-metadata": "^0.1.13",
         "reverse-string-template": "^1.0.0",
