@@ -67,7 +67,7 @@
         "session-file-store": "^1.4.0",
         "squirrelly": "^7.9.2",
         "ts-node-dev": "^1.0.0-pre.44",
-        "typeorm": "^0.2.24"
+        "typeorm": "^0.2.25"
     },
     "scripts": {
         "tsc": "tsc",
